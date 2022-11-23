@@ -28,7 +28,7 @@ function draw(ii) {
   i++;
   i %= keys.length;
   label = keys[i];
-  console.log(label);
+  // console.log(label);
   totaldata.then(function (d) {
     for (var i = 0; i < d.length; i++) {
       datas.push(d[i][label]);
@@ -90,6 +90,13 @@ function draw(ii) {
           return "translate(" + xScale(d.x0) + "," + yScale(d.length) + ")";
         });
 
+    //构造"#tooltip",位置位于页面右侧
+
+    var tooltip = d3.select("body")
+      .append("div")
+      .attr("id", "tooltip")
+      .style("position", "absolute")
+
     // 构造柱
     bar.append("rect")
       .attr("x", 1)
@@ -97,17 +104,41 @@ function draw(ii) {
       .attr("height",
         function (d) {
           return height - yScale(d.length) - padding.bottom;
-        });
-
-    bar.append("text")
-      .attr("dy", ".75em")
-      .attr("y", 6)
-      .attr("x", (xScale(his[0].x1) - xScale(his[0].x0)) / 2)
-      .attr("text-anchor", "middle")
-      .attr("font-size", "8px")
-      .attr("fill", "White")
-      .text(function (d) {
-        return d.length;
+        })
+      .attr("fill", "steelblue")
+      //添加动画 鼠标触碰变颜色
+      .on("mouseover", function (d, i) {
+        d3.select(this).attr("fill", "red");
+      })//移除时恢复
+      .on("mouseout", function (d, i) {
+        d3.select(this).attr("fill", "steelblue");
+      })//鼠标触碰时显示text
+      .on("mouseover", function (d, i) {
+        d3.select("#tooltip")//位置与bar对齐
+          .style("left", xScale(d.x0) + 10 + "px")
+          .style("top", yScale(d.length) - 10 + "px")
+          //字体变小
+          .style("font-size", "10px")
+          .style("opacity", 1.0)
+          .html(d.length + " days");
+      })
+      .on("mouseout", function (d, i) {
+        d3.select("#tooltip")
+          .style("opacity", 0.0);
+      })//点击则消失
+      .on("click", function (d, i) {
+        d3.select("#tooltip")
+          .style("opacity", 0.0);
       });
+
+
+    //svg底部添加label文本
+    svg.append("text")
+      .attr("x", width / 2)
+      .attr("y", height - 5)
+      .attr("text-anchor", "middle")
+      .attr("font-size", "16px")
+      .text(label);
+
   });
 }
