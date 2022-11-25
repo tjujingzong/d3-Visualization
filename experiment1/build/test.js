@@ -26,7 +26,7 @@ window.onload = async function () {
 }
 
 function draw(ii) {
-  var totaldata = d3.json("data/weather_data.json").then(function (data) {
+  var totaldata = d3.json("./data/weather_data.json").then(function (data) {
     return data;
   });
   var i = ii;
