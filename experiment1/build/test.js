@@ -1,9 +1,9 @@
-async function updatingBars() {
-  // 1. Access data
+async function updatingBars() {//异步
+  // 导入数据
   const dataset = await d3.json('./data/weather_data.json')
+  //await 用于等待一个异步方法执行完成，await 只能出现在 async 函数中。
 
-  // 2. Create chart dimensions
-
+  // 设置视图属性
   const width = 500
   let dimensions = {
     width: width,
@@ -20,8 +20,7 @@ async function updatingBars() {
   dimensions.boundedHeight =
     dimensions.height - dimensions.margin.top - dimensions.margin.bottom
 
-  // 3. Draw canvas
-
+  // 绘制画布
   const wrapper = d3
     .select('#wrapper')
     .append('svg')
@@ -35,11 +34,10 @@ async function updatingBars() {
       `translate(${dimensions.margin.left}px, ${dimensions.margin.top}px)`
     )
 
-  // init static elements
+  //初始化静态元素
   bounds.append('g').attr('class', 'bins')
-  bounds.append('line').attr('class', 'mean')
   bounds
-    .append('g')
+    .append('g')//它将一个'g' element附加到SVG
     .attr('class', 'x-axis')
     .style('transform', `translateY(${dimensions.boundedHeight}px)`)
     .append('text')
@@ -47,8 +45,8 @@ async function updatingBars() {
     .attr('x', dimensions.boundedWidth / 2)
     .attr('y', dimensions.margin.bottom - 10)
 
-  const drawHistogram = metric => {
-    const metricAccessor = d => d[metric]
+  const drawHistogram = metric => {//绘制直方图
+    const metricAccessor = d => d[metric]//数据存取器
     const yAccessor = d => d.length
 
     const xScale = d3
@@ -71,7 +69,7 @@ async function updatingBars() {
       .range([dimensions.boundedHeight, 0])
       .nice()
 
-    // 5. Draw data
+    // Draw data
     const barPadding = 1
 
     const exitTransition = d3.transition().duration(600)
@@ -135,7 +133,7 @@ async function updatingBars() {
     binGroups.selectAll('rect').on('mouseover', onMouseEnter).on('mouseleave', onMouseLeave)
     function onMouseEnter(d, i) {
       d3.select(this).style('fill', 'orange')
-      d3.select("#tooltip")//位置在bar上方
+      d3.select("#tooltip")//显示文字位置在bar上方
         .style("left", xScale(d.x0) + 210 + "px")
         .style("top", yScale(yAccessor(d)) + 50 + "px")
         .style("font-size", "12px")
@@ -147,17 +145,13 @@ async function updatingBars() {
       d3.select("#tooltip")
         .style("opacity", 0.0);
     }
-
     var tooltip = d3.select("body")
       .append("div")
       .attr("id", "tooltip")
       .style("position", "absolute")
 
-
-    // 6. Draw peripherals
-
+    // 给坐标轴添加标签和动画
     const xAxisGenerator = d3.axisBottom().scale(xScale)
-
     const xAxis = bounds.select('.x-axis')
       .transition(updateTransition) // IMPROVEMENT: Use our custom transition from above
       //We can now see our tick marks move to fit the new domain before the new tick marks are drawn

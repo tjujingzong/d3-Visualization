@@ -1,25 +1,31 @@
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2em;
+}
+
+.x-axis-label {
+  fill: black;
+  font-size: 1.4em;
+  text-transform: capitalize;
 }
 
 button {
-    font-size: 1.2em;
-    margin-left: 1em;
-    padding: 0.5em 1em;
-    appearance: none;
-    -webkit-appearance: none;
+  font-size: 1.2em;
+  margin-left: 1em;
+  padding: 0.5em 1em;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 button:hover,
 button:focus {
-    transform: translateY(1px);
+  transform: translateY(1px);
 }
 
 button:hover:active,
 button:focus:active,
 button:active {
-    transform: translateY(4px);
+  transform: translateY(4px);
 }
