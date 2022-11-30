@@ -110,8 +110,12 @@ const Scatter2: React.FC = () => {
           // console.log(selectedNodes, selectedLinks);
           setS1Data({ nodes: selectedNodes, links: selectedLinks });
         }
-        else{
+        else {
           setS1Data(data);
+          //全部结点恢复为白色
+          node
+            .attr('fill', '#fff')
+            .attr('stroke', '#000');
         }
       });
     // 为svg添加选择框

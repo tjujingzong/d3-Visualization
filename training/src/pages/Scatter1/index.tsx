@@ -43,7 +43,7 @@ const Scatter1: React.FC = () => {
     console.log(groupCount);
     //groupCount是一个对象，key是group的值，value是group的个数
     //获得key的最大值,定义为整数
-    const maxGroup = parseInt(d3.max(Object.keys(groupCount as any)) as string) + 2;
+    const maxGroup = parseInt(d3.max(Object.keys(groupCount as any)) as string) + 1;
     console.log(maxGroup);
     // 设置x和y的比例尺 ts
     // x为group y为count
@@ -87,14 +87,17 @@ const Scatter1: React.FC = () => {
       .attr('x', function (d, i) {
         return xScale(i) - (xScale(i + 1) - xScale(i)) / 2 + margin.left;
       })
-      .attr('y', function (d, i) {
+      .attr('y', function (d) {
         return yScale(groupCount[d]) + margin.top;
       })
-      .attr('width', function (d, i) {
-        return xScale(1) - xScale(0) - 1;
-      })
-      .attr('height', function (d, i) {
+      .transition()
+      .duration(1000)
+      .attr('width', xScale(1) - xScale(0) - 1)
+      .attr('height', function (d) {
         return clipheight - yScale(groupCount[d]);
+      })
+      .delay(function (d: any, i: any) {
+        return i * 100;
       })
       .attr('fill', 'steelblue');
   };
