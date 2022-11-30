@@ -14,42 +14,93 @@ import './index.less';
 const Scatter1: React.FC = () => {
   const { s1Data } = useModel('test');
   const svgRef = useRef<SVGSVGElement>(null);
-  const margin = { left: 30, right: 10, top: 10, bottom: 20 };
+  const margin = { left: 30, right: 150, top: 10, bottom: 100 };
   // 每次要清空svg 不然多次框选会重叠
   const clearSvg = () => {
     d3.select(svgRef.current)
       .selectAll('g')
       .remove();
   };//
-
   const drawScatter = (data: any[]) => {
     const width = svgRef.current?.clientWidth!;
     const height = svgRef.current?.clientHeight!;
     const clipWidth = width - margin.left - margin.right;
     const clipheight = height - margin.top - margin.bottom;
     const svg = d3.select(svgRef.current).select('.main');
+    // 清空svg
+    svg.selectAll('g').remove();
+
     let datas = data.map(function (d) {
       return d.group;
     });
-    // 计算各个分组的个数
-
-    // 设置x和y的比例尺
+    // 计算各个分组的个数 
+    // 计算datas中不同group的个数 ts
+    const groupCount = datas.reduce((obj: any, item: any) => {
+      obj[item] = (obj[item] || 0) + 1;
+      return obj;
+    }, {});
+    console.log(d3.max(Object.keys(groupCount as any)));
+    console.log(groupCount);
+    //groupCount是一个对象，key是group的值，value是group的个数
+    //获得key的最大值,定义为整数
+    const maxGroup = parseInt(d3.max(Object.keys(groupCount as any)) as string) + 2;
+    console.log(maxGroup);
+    // 设置x和y的比例尺 ts
+    // x为group y为count
+    const xScale = d3
+      .scaleLinear()
+      .domain([-1, maxGroup] as any)
+      .range([0, clipWidth]);
+    const yScale = d3
+      .scaleLinear()
+      .domain([0, d3.max(Object.values(groupCount as any))] as any)
+      .range([clipheight, 0]);
 
     let padding = { left: 0, top: 0, right: 0, bottom: 0 };
     // 设置x轴和y轴
+    const xAxis = d3.axisBottom(xScale);
+    const yAxis = d3.axisLeft(yScale);
+    // 添加x轴
+    svg
+      .append('g')
+      .attr('class', 'xAxis')
+      .attr('transform', `translate(${margin.left},${margin.top + clipheight})`)
+      .call(xAxis);
+    // 添加y轴
+    svg
+      .append('g')
+      .attr('class', 'yAxis')
+      .attr('transform', `translate(${margin.left},${margin.top})`)
+      .call(yAxis);
+
     let g = svg
       .append('g')
       .attr(
         'transform',
         'translate(' + padding.left + ',' + padding.top + ')',
       );
-    // 绘制直方图
-
-
+    // 根据x轴和y轴 绘制直方图
+    g.selectAll('rect')
+      .data(Object.keys(groupCount as any))
+      .enter()
+      .append('rect')
+      .attr('x', function (d, i) {
+        return xScale(i) - (xScale(i + 1) - xScale(i)) / 2 + margin.left;
+      })
+      .attr('y', function (d, i) {
+        return yScale(groupCount[d]) + margin.top;
+      })
+      .attr('width', function (d, i) {
+        return xScale(1) - xScale(0) - 1;
+      })
+      .attr('height', function (d, i) {
+        return clipheight - yScale(groupCount[d]);
+      })
+      .attr('fill', 'steelblue');
   };
 
   useEffect(() => {
-    drawScatter(s1Data);
+    drawScatter(s1Data.nodes);
   }, [s1Data]);
 
   return (

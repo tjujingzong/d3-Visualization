@@ -7,7 +7,7 @@ const index: React.FC = () => {
     <Row align="middle">
       <Col span={12} style={{ border: '1px solid #222' }} >
         <div style={{ width: '50vw', height: '100vh' }}>
-          {/* <Scatter1></Scatter1> */}
+          <Scatter1></Scatter1>
         </div>
       </Col>
       <Col span={12} style={{ border: '1px solid #222' }} >

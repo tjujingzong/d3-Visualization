@@ -12,6 +12,7 @@ const Scatter1: React.FC = () => {
     const clipwidth = width! - margin.left - margin.right;
     const clipheight = height! - margin.top - margin.bottom;
     const svg = d3.select(svgRef.current).select('.main');
+    console.log(data)
     const xScale = d3
       .scaleLinear()
       .domain(d3.extent(data, (d) => d.Miles_per_Gallon) as [any, any])
