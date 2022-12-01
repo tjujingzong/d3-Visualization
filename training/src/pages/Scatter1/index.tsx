@@ -84,8 +84,9 @@ const Scatter1: React.FC = () => {
       .data(Object.keys(groupCount as any))
       .enter()
       .append('rect')
+      //根据groupcount的key值设置x轴的位置
       .attr('x', function (d, i) {
-        return xScale(i) - (xScale(i + 1) - xScale(i)) / 2 + margin.left;
+        return xScale(parseInt(d));
       })
       .attr('y', function (d) {
         return yScale(groupCount[d]) + margin.top;
