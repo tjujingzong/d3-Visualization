@@ -134,17 +134,39 @@
 
 在./training目录下
 ## 实验三（网络与层次数据可视化）
-### 一、实验目的
-本次实验的主要目的是帮助大家初步掌握运用d3和Gephi创建节点链接形式的网络数据可视化的技术。
-### 二、实验内容
-#### 实验1：绘制WebKit 模块关系依赖图
-使用d3力导向绘制WebKit 模块依赖图，代码参考disjoint_graph文件夹中的程序。节点为WebKit的模块，链接为模块间的依赖关系。数据：webkit-dep.json。
-要求：效果参考下图。节点根据category染色。鼠标移到节点上高亮节点并显示出其名字。
+实验1：
 
-![image-20221222113614403](./pic/README/image-20221222113614403.png)
+![img](./pic/README/wps1-1673235194670-1.jpg) 
 
-####  实验2：绘制可视化论文引用网络
+图4 实验1结果
 
-节点为可视化领域的论文，链接为论文之间的引用。数据在vis_paper_citation_network文件夹中。
+ 
 
-要求：使用Gephi绘制，效果参考下图 。请用Gephi的社区检测算法识别类别，导出识别结果。然后对node的Fields_of_Study字段进行词频统计，得出每个类别的语义。结合语义和图谱中节点的分布写出你的发现（不少于200字）。![image-20221222114051123](./pic/README/image-20221222114051123.png)
+实验2：
+
+![img](./pic/README/wps2-1673235194671-2.jpg)![img](./pic/README/wps3.jpg) 
+
+图5 实验2结果（左图按照所属模块染色，右图按照发表年份染色）
+
+ 
+
+实验3：
+
+![img](./pic/README/wps4.jpg) 
+
+![img](./pic/README/wps5.jpg) 
+
+图6 实验3结果
+
+# 地理时空数据可视分析
+
+![img](./pic/README/wps1-1673235241455-8.jpg) ![img](./pic/README/wps2-1673235241455-9.jpg)
+
+图5  2010-2020年间黄石公园的春、夏季的PUD分布
+
+![img](./pic/README/wps3-1673235241455-10.jpg) ![img](./pic/README/wps4-1673235241455-11.jpg)
+
+图6  2010-2020年间黄石公园的秋、冬季的PUD分布
+
+![img](./pic/README/wps5-1673235241456-12.jpg) ![img](./pic/README/wps6.jpg)
+
